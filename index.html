@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>...</title>
+    <title>Letter</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Dancing+Script&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -27,27 +27,23 @@
     <div id="letter" class="letter">
         <button class="close-x" onclick="closeLetter()" aria-label="Close letter">×</button>
         <h1>Dear JP,</h1>
-        <p id="confessionText">Hi, maybe you already have an idea or maybe not about this,
-            but I hope you take time to read this. I know we're both strangers to each other,
-            especially me. I only saw you when one of my socmed moots uploaded a story with you 
-            in it; whenever I viewed her story, I noticed you. At first I didn't really mind,
-            but lately I've been starting to pause the story for like a second or re-view it,
-            and I don't even know the reason why. Then there's this time when I saw a video of
-            you on TikTok singing (yung nag trending). That's when you really caught my attention.
-            I like the way you sing, and maybe that is the reason why I'm doing this.
-            
-            So, let me get to the point: I have a small crush on you (ganto 🤏🏻), a happy crush to be exact.
-            I don't normally confess to my previous crushes, but now I just want to do it, but of course I'm
-            going to hide in this dump account.🫣 This is a very random and sudden confession, but bear with me.
-            I really don't want to do this because you're like a kuya to me (2yrs gap bro🥹), but I also don't mind.
-            This makes me happy, so do what makes you happy, not the typical serious confession because of the emojis,
-            but I just want to make it happy and memorable (?) for you and for me also.
-            
-            That's all lang naman, nothing too serious, and mostly especially not expecting any in return because
-            happy crush lang naman, I'm already contented by just viewing your story here sa IG
-            (ty at hindi private acc mo 😁). Hope you have a wonderful day ahead of you, and good luck din pala sa finals niyo!!!
-        </p>
-        <p id="sincerelyText">From, a tech girlie na taga blue school na may crush sa'yo >⁠.⁠< <br></p>
+        <p id="confessionText">
+            Hi, maybe you already have an idea or maybe not about this, but I hope you take time to read this. I know we're both strangers
+            to each other, especially me. I only saw you when one of my socmed moots uploaded a story with you in it; whenever I viewed her
+            story, I noticed you. At first I didn't really mind, but lately I've been starting to pause the story for like a second or re-view 
+            it, and I don't even know the reason why. Then there's this time when I saw a video of you on TikTok singing (yung nag trending).
+            That's when you really caught my attention. I like the way you sing, and maybe that is the reason why I'm doing this.</p>
+        <p id="confessionText">
+            So, let me get to the point: I have a small crush on you (ganto 🤏🏻), a happy crush to be exact. I don't normally confess to my 
+            previous crushes, but now I just want to do it, but of course I'm going to hide in this dump account.🫣 This is a very random 
+            and sudden confession, but bear with me. I really don't want to do this because you're like a kuya to me (2yrs gap bro🥹), but 
+            I also don't mind. This makes me happy, so do what makes you happy, not the typical serious confession because of the emojis, 
+            but I just want to make it happy and memorable (?) for you and for me also.</p>
+        <p id="confessionText">
+            That's all lang naman, nothing too serious, and mostly especially not expecting any in return because happy crush lang naman, 
+            I'm already contented by just viewing your story here sa IG (ty at hindi private acc mo 😁). Hope you have a wonderful day ahead 
+            of you, and good luck din pala sa finals niyo!!!</p>
+        <p id="sincerelyText">— a tech-girlie na taga blue school na may crush sa'yo >⁠.⁠< <br></p>
     </div>
 
     <script>
@@ -69,52 +65,48 @@
             setTimeout(() => {
                 letter.classList.add('centered');
             }, 2500);
-            
-            const fullText = textElement.textContent;
-            textElement.textContent = '';
-            textElement.classList.add('typing');
-            let i = 0;
-            const typeWriter = () => {
-                if (window.typingCancelled) {
-                    textElement.classList.remove('typing');
-                    return;
-                }
-                if (i < fullText.length) {
-                    textElement.textContent += fullText.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 50);
-                } else {
-                    textElement.classList.remove('typing');
 
-                    const sincerelyEl = document.getElementById('sincerelyText');
-                    if (sincerelyEl && !window.typingCancelled) {
+            const elements = Array.from(document.querySelectorAll('#letter p'));
+            const typingSpeed = 20; 
+            const interElementDelay = 250; 
 
-                        sincerelyEl.style.display = 'block';
-                        const sincerelyFull = sincerelyEl.textContent.trim();
+            elements.forEach(el => {
+                el.dataset.fullHtml = el.innerHTML;
+                el.dataset.fullText = el.textContent.trim();
+                el.textContent = '';
 
-                        sincerelyEl.textContent = '';
-                        sincerelyEl.classList.add('typing');
-                        let j = 0;
-                        const typeSincerely = () => {
-                            if (window.typingCancelled) {
-                                sincerelyEl.classList.remove('typing');
-                                return;
-                            }
-                            if (j < sincerelyFull.length) {
-                                sincerelyEl.textContent += sincerelyFull.charAt(j);
-                                j++;
-                                setTimeout(typeSincerely, 50);
-                            } else {
+                if (el.id === 'sincerelyText') el.style.display = 'none';
+            });
 
-                                sincerelyEl.innerHTML = sincerelyFull + '<br>';
-                                sincerelyEl.classList.remove('typing');
-                            }
-                        };
-                        setTimeout(typeSincerely, 300);
+            function typeElement(el, done) {
+                if (window.typingCancelled) { el.classList.remove('typing'); done(); return; }
+                if (el.style.display === 'none') el.style.display = 'block';
+                el.classList.add('typing');
+                const full = el.dataset.fullText || '';
+                let k = 0;
+                function step() {
+                    if (window.typingCancelled) { el.classList.remove('typing'); done(); return; }
+                    if (k < full.length) {
+                        el.textContent += full.charAt(k);
+                        k++;
+                        setTimeout(step, typingSpeed);
+                    } else {
+                        if (el.dataset.fullHtml && el.dataset.fullHtml.includes('<')) {
+                            el.innerHTML = el.dataset.fullHtml;
+                        }
+                        el.classList.remove('typing');
+                        setTimeout(done, interElementDelay);
                     }
                 }
-            };
-            setTimeout(typeWriter, 1000);
+                step();
+            }
+
+            function startSequence(index) {
+                if (index >= elements.length) return;
+                typeElement(elements[index], () => startSequence(index + 1));
+            }
+
+            setTimeout(() => startSequence(0), 2800);
         }
         
         function closeLetter() {
@@ -289,16 +281,19 @@
             opacity: 0;
             transition: opacity 1.5s ease 0.5s, transform 1s ease 1s;
             background: linear-gradient(145deg, #fff 0%, #fafafa 100%);
-            padding: 30px;
+            padding: 36px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 650px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+            width: 90%;
+            max-width: 820px;
+            min-width: 480px;
+            min-height: 360px; 
             margin-top: 20px;
             display: none;
-            overflow: hidden;
+            overflow: auto; 
             border: 2px solid #e91e63;
             position: relative;
-            z-index: 1; 
+            z-index: 2; 
         }
         .letter.centered {
             position: absolute;
@@ -354,5 +349,87 @@
         .close-x:hover { background: rgba(233,30,99,0.06); transform: translateY(-1px); }
         .letter.closing { opacity: 0; transition: opacity 0.45s ease; }
         .letter.centered.closing { transform: translate(-50%, -50%) scale(0.82) !important; opacity: 0; transition: transform 0.45s ease, opacity 0.45s ease; }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                min-height: 100vh;
+            }
+            .envelope {
+                width: 280px;
+                height: 160px;
+                border: 2px solid #e91e63;
+                margin-bottom: 15px;
+            }
+            .envelope::before {
+                font-size: 24px;
+                top: 18%;
+            }
+            .envelope::after {
+                height: 50%;
+            }
+            .envelope-text {
+                font-size: 14px;
+                top: 25%;
+                width: calc(100% - 20px);
+            }
+            .heart {
+                width: 16px;
+                height: 14px;
+            }
+            .letter {
+                width: 95%;
+                max-width: 100%;
+                min-width: auto;
+                min-height: 280px;
+                padding: 24px;
+                margin-top: 15px;
+                border-radius: 12px;
+            }
+            .letter h1 {
+                font-size: 26px;
+                margin-bottom: 16px;
+            }
+            .letter p {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            .close-x {
+                font-size: 18px;
+                top: 8px;
+                right: 10px;
+                padding: 3px 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            .envelope {
+                width: 240px;
+                height: 140px;
+                border: 2px solid #e91e63;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+            .envelope::before {
+                font-size: 20px;
+            }
+            .envelope-text {
+                font-size: 12px;
+            }
+            .letter {
+                padding: 18px;
+                min-height: 240px;
+            }
+            .letter h1 {
+                font-size: 22px;
+                margin-bottom: 12px;
+            }
+            .letter p {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+        }
     </style>
 </html>
